@@ -36,7 +36,7 @@ public class SessionFilter implements Filter {
         res.setHeader("Expires", "0");
 
         if (session != null && session.getAttribute("user") != null) {
-            res.sendRedirect("index.html");
+            res.sendRedirect("home.html");
         } else {
             chain.doFilter(request, response);
         }
