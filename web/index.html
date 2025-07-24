@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+        <link rel="icon" type="image/png" href="images/icons/favicon.png" />
+
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="fonts/iconic/css/material-design-iconic-font.css" type="text/css">
+        <link rel="stylesheet" href="fonts/iconic/css/material-design-iconic-font.min.css" type="text/css"/>
+
+
+        <title>Welcome Page</title>
+    </head>
+
+    <body id="body">
+
+        <!-- Loader -->
+        <div id="loader">
+            <div class="loader-content">
+
+                <div class="spinner"></div>
+            </div>
+        </div>
+        <!-- Loader End -->
+
+        <!-- Sign Up form -->
+        <div class="container" id="container">
+
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h1>Create Account</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+
+                    </div>
+                    <span>or use your email for registration</span>
+                    <span style="color: rgb(222, 0, 0); font-weight: bold; margin-bottom: 2px; margin-top: 2px;" id="message"></span>
+                    <input id="firstName" type="text" placeholder="First Name" />
+                    <input id="lastName" type="text" placeholder="Last Name" />
+                    <input id="email" type="email" placeholder="Email" />
+                    <input id="password" type="password" placeholder="Password" />
+                    <button style="margin-top: 5px; margin-bottom: 5px;" onclick="signUp();">Sign Up</button>
+                </form>
+            </div>
+            <!-- Sign Up form end -->
+
+            <!-- Sign In form -->
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h1>Sign in</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <span>or use your account</span>
+                    <span style="color: rgb(222, 0, 0); font-weight: bold; margin-bottom: 2px; margin-top: 2px;" id="message2"></span>
+                    <input type="email" placeholder="Email" id="emailSI" />
+                    <input type="password" placeholder="Password" id="passwordSI" />
+                    <a href="#">Forgot your password?</a>
+                    <button style="margin-top: 5px;" onclick="signIn();">Sign In</button>
+                </form>
+            </div>
+            <!-- Sign In form end -->
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Welcome to</h1><br>
+                        <img src="images/icons/CanoLogoFull.png" alt="CANO Store Logo" class="" />
+
+                        <p>To keep connected with us please login with your personal info</p>
+
+                        <button class="ghost" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Join with us!</h1><br>
+                        <img src="images/icons/CanoLogoFull.png" alt="CANO Store Logo" class="" />
+
+                        <p>Are you new to CANO Store?</p>
+
+                        <button class="ghost" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <footer>
+            <p class="stext-107 cl6 txt-center">
+
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> All rights reserved | Developed by
+                <a href="https://github.com/xPamii" target="_blank" class="text-primary">PAMITH HERATH</a>
+
+            </p>
+        </footer>
+        <!-- Footer End-->
+
+
+        <script src="js/script.js"></script>
+        <script src="js/signUp.js"></script>
+        <script src="js/signin.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+        <!-- Loader Control -->
+        <script>
+                    window.addEventListener("load", function () {
+                        const loader = document.getElementById("loader");
+                        loader.style.opacity = "0";
+                        loader.style.pointerEvents = "none";
+                        setTimeout(() => loader.style.display = "none", 5000);
+                    });
+        </script>
+        <!-- Loader Control End-->
+
+    </body>
+
+</html>
