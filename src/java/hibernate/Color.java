@@ -15,8 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "color")
-public class Color implements Serializable{
-    
+public class Color implements Serializable{   
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
