@@ -53,8 +53,14 @@ public class User implements Serializable{
         this.created_at = created_at;
     }
 
-    
-    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFirst_name() {
         return first_name;
     }
@@ -103,7 +109,4 @@ public class User implements Serializable{
         this.created_at = created_at;
     }
 
-  
-    
-    
 }
