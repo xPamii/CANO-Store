@@ -23,6 +23,9 @@ public class Size implements Serializable {
     @Column(name = "value", length = 10, nullable = false)
     private String value;
 
+    public Size() {
+    }
+
     public int getId() {
         return id;
     }
