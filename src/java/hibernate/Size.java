@@ -1,17 +1,10 @@
 package hibernate;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- *
- * @author pamii
- */
 @Entity
 @Table(name = "size")
 public class Size implements Serializable {
@@ -20,10 +13,15 @@ public class Size implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "value", length = 10, nullable = false)
-    private String value;
+    private String value; // e.g., "S", "M", "L"
 
-    public Size() {
+    @ManyToMany(mappedBy = "sizes")
+    private Set<Product> products = new HashSet<>();
+
+    public Size() {}
+
+    public Size(String value) {
+        this.value = value;
     }
 
     public int getId() {
@@ -42,4 +40,11 @@ public class Size implements Serializable {
         this.value = value;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
 }
