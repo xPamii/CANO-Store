@@ -2,12 +2,16 @@ package hibernate;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,9 +54,13 @@ public class Product implements Serializable {
     @JoinColumn(name = "color_id")
     private Color color;
 
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Size size;
+    @ManyToMany
+    @JoinTable(
+            name = "product_sizes",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id")
+    )
+    private Set<Size> sizes = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -61,6 +69,9 @@ public class Product implements Serializable {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    public Product() {
+    }
 
     public int getId() {
         return id;
@@ -126,14 +137,6 @@ public class Product implements Serializable {
         this.color = color;
     }
 
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
     public Type getType() {
         return type;
     }
@@ -148,6 +151,14 @@ public class Product implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Set<Size> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(Set<Size> sizes) {
+        this.sizes = sizes;
     }
 
 }
