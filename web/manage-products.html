@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Product Management - CANO Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/admin-style.css">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    </head>
+    <body>
+
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <nav class="bg-dark text-white p-3 min-vh-100" style="width: 250px;">
+                <h4 class="mb-4">CANO Admin</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="index.html" class="nav-link text-white">Dashboard</a></li>
+                    <li class="nav-item"><a href="products.html" class="nav-link text-white active">Products</a></li>
+                    <li class="nav-item"><a href="orders.html" class="nav-link text-white">Orders</a></li>
+                    <li class="nav-item"><a href="users.html" class="nav-link text-white">Users</a></li>
+                    <li class="nav-item"><a href="reports.html" class="nav-link text-white">Reports</a></li>
+
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="p-4 flex-fill">
+                <h2>Product Management</h2>
+
+                <!-- Product Form -->
+                <div class="card mt-4 border border-primary" >
+                    <div class="card-header bg-primary text-white" style="font-weight: bold">Add / Update Product</div>
+                    <div class="card-body">
+                        <form id="product-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Product Title</label>
+                                    <input type="text" class="form-control" id="productTitle" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label>Quantity</label>
+                                    <input type="number" class="form-control" id="productQty" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label>Price ($)</label>
+                                    <input type="number" class="form-control" id="productPrice" required>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label>Product Description</label>
+                                    <textarea class="form-control" id="productDesc" rows="2" required></textarea>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Color</label>
+                                    <select class="form-select" id="productColor" required>
+                                        <option value="">Select</option>
+                                        <option>Red</option>
+                                        <option>Blue</option>
+                                        <option>Black</option>
+                                        <option>White</option>
+                                        <option>Green</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Category</label>
+                                    <select class="form-select" id="productCategory" required>
+                                        <option value="">Select</option>
+                                        <option>T-Shirts</option>
+                                        <option>Shirts</option>
+                                        <option>Jeans</option>
+                                        <option>Dresses</option>
+                                        <option>Hoodies</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Type</label>
+                                    <select class="form-select" id="productType" required>
+                                        <option value="">Select</option>
+                                        <option>Men</option>
+                                        <option>Women</option>
+                                        <option>Accessories</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label>Sizes</label><br>
+
+                                    <!-- Normal sizes -->
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="S" id="sizeS">
+                                        <label class="form-check-label" for="sizeS">S</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="M" id="sizeM">
+                                        <label class="form-check-label" for="sizeM">M</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="L" id="sizeL">
+                                        <label class="form-check-label" for="sizeL">L</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="XL" id="sizeXL">
+                                        <label class="form-check-label" for="sizeXL">XL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="XXL" id="sizeXXL">
+                                        <label class="form-check-label" for="sizeXXL">XXL</label>
+                                    </div>
+
+                                    <!-- Free size only -->
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="Free Size" id="freeSize">
+                                        <label class="form-check-label" for="freeSize">Free Size</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Image Uploads -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Product Image 1</label>
+                                    <input type="file" class="form-control" id="productImage1" accept="image/*" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Product Image 2</label>
+                                    <input type="file" class="form-control" id="productImage2" accept="image/*">
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Product Image 3</label>
+                                    <input type="file" class="form-control" id="productImage3" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- Image Uploads End-->
+
+                            <button onclick="saveProduct();" id="saveBtn" type="submit" class="btn btn-success" style="width: 250px; font-weight: bold; height: 50px; margin-top: 30px;">Save Product</button>
+                            <button onclick="resetProductForm();" id="resetBtn" type="button" class="btn btn-outline-danger" style="width: 250px; font-weight: bold; height: 50px; margin-top: 30px;">Reset</button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <hr class="rounded" style="  border-top: 3px solid #bbb;  border-radius: 5px; margin-top: 30px;">
+
+                <!-- Product List Table -->
+                <div class="mt-4">
+                    <h4>Product List</h4>
+                    <table class="table table-bordered mt-3">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Color</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Sizes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTable">
+                            <!-- JS inserts rows here -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/manage-products.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </body>
+</html>
