@@ -9,5 +9,14 @@
         <property name="hibernate.connection.password">MIHIRANGI@0522</property>
         <property name="hibernate.show_sql">true</property>
         <mapping class="hibernate.User" />
+        <mapping class="hibernate.AdminLG" />
+        <mapping class="hibernate.Address" />
+        <mapping class="hibernate.Category" />
+        <mapping class="hibernate.City" />
+        <mapping class="hibernate.Color" />
+        <mapping class="hibernate.Product" />
+        <mapping class="hibernate.Size" />
+        <mapping class="hibernate.Status" />
+        <mapping class="hibernate.Type" />
     </session-factory>
 </hibernate-configuration>
