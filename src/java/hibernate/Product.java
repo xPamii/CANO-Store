@@ -54,14 +54,17 @@ public class Product implements Serializable {
     @JoinColumn(name = "color_id")
     private Color color;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_sizes",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "size_id")
-    )
-    private Set<Size> sizes = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size size;
 
+//    @ManyToMany
+//    @JoinTable(
+//            name = "product_sizes",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "size_id")
+//    )
+//    private Set<Size> sizes = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "type_id")
     private Type type;
@@ -153,12 +156,12 @@ public class Product implements Serializable {
         this.status = status;
     }
 
-    public Set<Size> getSizes() {
-        return sizes;
+    public Size getSize() {
+        return size;
     }
 
-    public void setSizes(Set<Size> sizes) {
-        this.sizes = sizes;
+    public void setSize(Size size) {
+        this.size = size;
     }
 
 }
