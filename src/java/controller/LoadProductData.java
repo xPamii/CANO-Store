@@ -51,6 +51,8 @@ public class LoadProductData extends HttpServlet {
         responseObject.add("categoryList", gson.toJsonTree(categoryList));
         responseObject.add("typeList", gson.toJsonTree(typeList));
 
+        responseObject.addProperty("status", true);
+
         String toJSON = gson.toJson(responseObject);
         response.setContentType("application/json");
         response.getWriter().write(toJSON);
