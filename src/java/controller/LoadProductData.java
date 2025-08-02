@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import hibernate.Category;
 import hibernate.Color;
 import hibernate.HibernateUtil;
+import hibernate.Size;
 import hibernate.Type;
 import java.io.IOException;
 import java.util.List;
@@ -45,11 +46,16 @@ public class LoadProductData extends HttpServlet {
         Criteria c3 = s.createCriteria(Type.class);
         List<Type> typeList = c3.list();
 
+        //Load sizes
+        Criteria c4 = s.createCriteria(Size.class);
+        List<Size> sizeList = c4.list();
+
         Gson gson = new Gson();
 
         responseObject.add("colorList", gson.toJsonTree(colorList));
         responseObject.add("categoryList", gson.toJsonTree(categoryList));
         responseObject.add("typeList", gson.toJsonTree(typeList));
+        responseObject.add("sizeList", gson.toJsonTree(sizeList));
 
         responseObject.addProperty("status", true);
 
