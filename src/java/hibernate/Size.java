@@ -13,12 +13,13 @@ public class Size implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String value; // e.g., "S", "M", "L"
+    @Column(name = "value", length = 20, nullable = false)
+    private String value;
 
-    @ManyToMany(mappedBy = "sizes")
-    private Set<Product> products = new HashSet<>();
-
-    public Size() {}
+//    @ManyToMany(mappedBy = "sizes")
+//    private Set<Product> products = new HashSet<>();
+    public Size() {
+    }
 
     public Size(String value) {
         this.value = value;
@@ -39,12 +40,12 @@ public class Size implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
+//
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<Product> products) {
+//        this.products = products;
+//    }
 }
