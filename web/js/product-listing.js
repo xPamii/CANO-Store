@@ -8,10 +8,7 @@ async function loadProductData() {
             loadSelect("productColor", json.colorList, "value");
             loadSelect("productCategory", json.categoryList, "category");
             loadSelect("productType", json.typeList, "value");
-
-            console.log(json.colorList);
-            console.log(json.categoryList);
-            console.log(json.typeList);
+            
         } else {
             document.getElementById("message").innerHTML = "Something went wrong. Please try again later";
         }
