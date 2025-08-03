@@ -58,6 +58,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "size_id")
     private Size size;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_login_id")
+    private AdminLG adminLG;
+
 //    @ManyToMany
 //    @JoinTable(
 //            name = "product_sizes",
@@ -162,6 +166,14 @@ public class Product implements Serializable {
 
     public void setSize(Size size) {
         this.size = size;
+    }
+
+    public AdminLG getAdminLG() {
+        return adminLG;
+    }
+
+    public void setAdminLG(AdminLG adminLG) {
+        this.adminLG = adminLG;
     }
 
 }
