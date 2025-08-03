@@ -1,52 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const typeSelect = document.getElementById("productType");
-    const sizeCheckboxes = document.querySelectorAll('input[type="checkbox"][name="productSize"]');
-    const freeSizeCheckbox = document.getElementById("freeSize");
-
-    // Enable/disable size checkboxes based on selected type
-    typeSelect.addEventListener("change", function () {
-        const selectedType = typeSelect.value;
-
-        if (selectedType === "Accessories") {
-            sizeCheckboxes.forEach(cb => {
-                if (cb.id !== "freeSize") {
-                    cb.checked = false;
-                    cb.disabled = true;
-                }
-            });
-            freeSizeCheckbox.disabled = false;
-        } else {
-            sizeCheckboxes.forEach(cb => cb.disabled = false);
-        }
-    });
-
-
-
-    // Attach submit and reset handlers
-    document.getElementById("saveBtn").addEventListener("click", function (e) {
-        e.preventDefault();
-        saveProduct();
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", function (e) {
-        e.preventDefault();
-        resetProductForm();
-    });
-});
-
-
 // Save Product
 async function saveProduct() {
     const title = document.getElementById("productTitle").value;
-    const quantity = parseInt(document.getElementById("productQty").value);
-    const price = parseFloat(document.getElementById("productPrice").value);
+    const quantity = document.getElementById("productQty").value;
+    const price = document.getElementById("productPrice").value;
     const description = document.getElementById("productDesc").value;
     const color = document.getElementById("productColor").value;
     const category = document.getElementById("productCategory").value;
     const type = document.getElementById("productType").value;
+    const size = document.getElementById("productSize").value;
 
-    const sizeCheckboxes = document.querySelectorAll('input[type="checkbox"][name="productSize"]:checked');
-    const checkedSizes = Array.from(sizeCheckboxes).map(cb => cb.value);
 
     const image1 = document.getElementById("productImage1").files[0];
     const image2 = document.getElementById("productImage2").files[0];
@@ -60,7 +22,7 @@ async function saveProduct() {
     form.append("color", color);
     form.append("category", category);
     form.append("type", type);
-    form.append("checkedSizes", JSON.stringify(checkedSizes));
+    form.append("size", size);
 
     if (image1)
         form.append("image1", image1);
@@ -77,6 +39,7 @@ async function saveProduct() {
 
         if (response.ok) {
             const json = await response.json();
+
             Swal.fire({
                 title: "Success!",
                 text: json.message || "Product saved successfully.",
@@ -84,14 +47,19 @@ async function saveProduct() {
                 confirmButtonColor: "#3085d6"
             });
 
-            resetProductForm();
+//            resetProductForm();
         } else {
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to submit product. Please try again.",
-                icon: "error",
-                confirmButtonColor: "#d33"
-            });
+            if (json.message === "Please login") {
+                window.location = "admin-login.html";
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to submit product. Please try again.",
+                    icon: "error",
+                    confirmButtonColor: "#d33"
+                });
+            }
+
         }
 
     } catch (error) {
@@ -130,38 +98,34 @@ function resetProductForm() {
 }
 
 // Render Product Table
-function renderProducts() {
-    const table = document.getElementById("productTable");
-    table.innerHTML = "";
-    let products = [];
-
-
-    if (!window.products || products.length === 0) {
-        table.innerHTML = `<tr><td colspan="8">No products found.</td></tr>`;
-        return;
-    }
-
-    products.forEach((p, i) => {
-        table.innerHTML += `
-        <tr>
-          <td>${p.title}</td>
-          <td>${p.quantity}</td>
-          <td>$${p.price}</td>
-          <td>${p.color}</td>
-          <td>${p.category}</td>
-          <td>${p.type}</td>
-          <td>${p.sizes.join(", ")}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="editProduct(${i})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${i})">Delete</button>
-          </td>
-        </tr>`;
-    });
-}
-
-
-
-
+//function renderProducts() {
+//    const table = document.getElementById("productTable");
+//    table.innerHTML = "";
+//    let products = [];
+//
+//
+//    if (!window.products || products.length === 0) {
+//        table.innerHTML = `<tr><td colspan="8">No products found.</td></tr>`;
+//        return;
+//    }
+//
+//    products.forEach((p, i) => {
+//        table.innerHTML += `
+//        <tr>
+//          <td>${p.title}</td>
+//          <td>${p.quantity}</td>
+//          <td>$${p.price}</td>
+//          <td>${p.color}</td>
+//          <td>${p.category}</td>
+//          <td>${p.type}</td>
+//          <td>${p.sizes.join(", ")}</td>
+//          <td>
+//            <button class="btn btn-sm btn-primary" onclick="editProduct(${i})">Edit</button>
+//            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${i})">Delete</button>
+//          </td>
+//        </tr>`;
+//    });
+//}
 
 
 
