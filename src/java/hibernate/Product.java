@@ -77,6 +77,15 @@ public class Product implements Serializable {
     @JoinColumn(name = "status_id")
     private Status status;
 
+    @Column(name = "weight", nullable = false)
+    private String weight;
+    
+    @Column(name = "dimension", nullable = false)
+    private String dimension;
+    
+    @Column(name = "material", nullable = false)
+    private String material;
+
     public Product() {
     }
 
@@ -174,6 +183,30 @@ public class Product implements Serializable {
 
     public void setAdminLG(AdminLG adminLG) {
         this.adminLG = adminLG;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
 }
