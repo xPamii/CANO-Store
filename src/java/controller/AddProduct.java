@@ -41,6 +41,9 @@ public class AddProduct extends HttpServlet {
         String quantity = request.getParameter("quantity");
         String price = request.getParameter("price");
         String description = request.getParameter("description");
+        String weight = request.getParameter("weight");
+        String dimension = request.getParameter("dimension");
+        String material = request.getParameter("material");
         String color = request.getParameter("color");
         String category = request.getParameter("category");
         String type = request.getParameter("type");
@@ -76,6 +79,15 @@ public class AddProduct extends HttpServlet {
 
         } else if (description.isEmpty()) {
             responseObject.addProperty("message", "Product description can not be empty");
+            
+        } else if (weight.isEmpty()) {
+            responseObject.addProperty("message", "Product weight can not be empty");
+            
+        } else if (dimension.isEmpty()) {
+            responseObject.addProperty("message", "Product dimension can not be empty");
+            
+        } else if (material.isEmpty()) {
+            responseObject.addProperty("message", "Product material can not be empty");
 
         } else if (!Util.isInteger(color)) {
             responseObject.addProperty("message", "Invalid color");
@@ -132,6 +144,9 @@ public class AddProduct extends HttpServlet {
                             p.setQty(Integer.parseInt(quantity));
                             p.setPrice(Double.parseDouble(price));
                             p.setDescription(description);
+                            p.setWeight(weight);
+                            p.setDimension(dimension);
+                            p.setMaterial(material);
                             p.setColor(color1);
                             p.setCategory(category1);
                             p.setType(type1);
