@@ -4,6 +4,9 @@ async function saveProduct() {
     const quantity = document.getElementById("productQty").value;
     const price = document.getElementById("productPrice").value;
     const description = document.getElementById("productDesc").value;
+    const weight = document.getElementById("productWeight").value;
+    const dimension = document.getElementById("productDimension").value;
+    const material = document.getElementById("productMaterial").value;
     const color = document.getElementById("productColor").value;
     const category = document.getElementById("productCategory").value;
     const type = document.getElementById("productType").value;
@@ -19,6 +22,9 @@ async function saveProduct() {
     form.append("quantity", quantity);
     form.append("price", price);
     form.append("description", description);
+    form.append("weight", weight);
+    form.append("dimension", dimension);
+    form.append("material", material);
     form.append("color", color);
     form.append("category", category);
     form.append("type", type);
