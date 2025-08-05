@@ -5,9 +5,10 @@
         <title>Product Management - CANO Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/admin-style.css">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <link rel="icon" type="image/png" href="images/icons/favicon.png" />
+
     </head>
-    <body>
+    <body onload="loadProductData();">
 
         <div class="d-flex">
             <!-- Sidebar -->
@@ -31,7 +32,7 @@
                 <div class="card mt-4 border border-primary" >
                     <div class="card-header bg-primary text-white" style="font-weight: bold">Add / Update Product</div>
                     <div class="card-body">
-                        <form id="product-form">
+                        <form id="product-form" method="post">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label>Product Title</label>
@@ -39,82 +40,89 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label>Quantity</label>
-                                    <input type="number" class="form-control" id="productQty" required>
+                                    <input type="number" class="form-control" id="productQty" min="1" value="1" required>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <label>Price ($)</label>
-                                    <input type="number" class="form-control" id="productPrice" required>
+                                    <label>Price (LKR)</label>
+                                    <input type="number" class="form-control" id="productPrice" pattern="^\d+(\.\d{2})?$" placeholder="0.00" required>
                                 </div>
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-12 mb-4">
                                     <label>Product Description</label>
                                     <textarea class="form-control" id="productDesc" rows="2" required></textarea>
                                 </div>
 
                                 <div class="col-md-4 mb-3">
+                                    <label>Product Weight (G)</label>
+                                    <input type="text" class="form-control" id="productWeight" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label>Product Dimensions (CM)</label>
+                                    <input type="text" class="form-control" id="productDimension" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label>Product Materials</label>
+                                    <input type="text" class="form-control" id="productMaterial" required>
+                                </div>
+
+
+                                <div class="col-md-3 mb-4">
                                     <label>Color</label>
                                     <select class="form-select" id="productColor" required>
-                                        <option value="">Select</option>
-                                        <option>Red</option>
-                                        <option>Blue</option>
-                                        <option>Black</option>
-                                        <option>White</option>
-                                        <option>Green</option>
+                                        <option value="0">Select</option>
                                     </select>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-4">
                                     <label>Category</label>
                                     <select class="form-select" id="productCategory" required>
-                                        <option value="">Select</option>
-                                        <option>T-Shirts</option>
-                                        <option>Shirts</option>
-                                        <option>Jeans</option>
-                                        <option>Dresses</option>
-                                        <option>Hoodies</option>
+                                        <option value="0">Select</option>
                                     </select>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-4">
                                     <label>Type</label>
                                     <select class="form-select" id="productType" required>
-                                        <option value="">Select</option>
-                                        <option>Men</option>
-                                        <option>Women</option>
-                                        <option>Accessories</option>
+                                        <option value="0">Select</option>
                                     </select>
                                 </div>
 
-                                <div class="col-md-12 mb-3">
-                                    <label>Sizes</label><br>
-
-                                    <!-- Normal sizes -->
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="S" id="sizeS">
-                                        <label class="form-check-label" for="sizeS">S</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="M" id="sizeM">
-                                        <label class="form-check-label" for="sizeM">M</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="L" id="sizeL">
-                                        <label class="form-check-label" for="sizeL">L</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="XL" id="sizeXL">
-                                        <label class="form-check-label" for="sizeXL">XL</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="XXL" id="sizeXXL">
-                                        <label class="form-check-label" for="sizeXXL">XXL</label>
-                                    </div>
-
-                                    <!-- Free size only -->
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value="Free Size" id="freeSize">
-                                        <label class="form-check-label" for="freeSize">Free Size</label>
-                                    </div>
+                                <div class="col-md-3 mb-4">
+                                    <label>Size</label>
+                                    <select class="form-select" id="productSize" required>
+                                        <option value="0">Select</option>
+                                    </select>
                                 </div>
+
+
+                                <!--                           <div class="col-md-12 mb-3">
+                                                                    <label>Sizes</label><br>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="S" id="sizeS">
+                                                                        <label class="form-check-label" for="sizeS">S</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="M" id="sizeM">
+                                                                        <label class="form-check-label" for="sizeM">M</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="L" id="sizeL">
+                                                                        <label class="form-check-label" for="sizeL">L</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="XL" id="sizeXL">
+                                                                        <label class="form-check-label" for="sizeXL">XL</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="XXL" id="sizeXXL">
+                                                                        <label class="form-check-label" for="sizeXXL">XXL</label>
+                                                                    </div>
+                                
+                                
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="checkbox" value="FreeSize" id="freeSize">
+                                                                        <label class="form-check-label" for="freeSize">Free Size</label>
+                                                                    </div>
+                                                                </div>-->
 
                             </div>
 
@@ -122,21 +130,26 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label>Product Image 1</label>
-                                    <input type="file" class="form-control" id="productImage1" accept="image/*" required>
+                                    <input type="file" class="form-control" id="productImage1" name="image1" accept="image/*" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Product Image 2</label>
-                                    <input type="file" class="form-control" id="productImage2" accept="image/*">
+                                    <input type="file" class="form-control" id="productImage2" name="image2" accept="image/*" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Product Image 3</label>
-                                    <input type="file" class="form-control" id="productImage3" accept="image/*">
+                                    <input type="file" class="form-control" id="productImage3" name="image3" accept="image/*" required>
                                 </div>
                             </div>
                             <!-- Image Uploads End-->
+                            
+                            <p class="text-danger" style="font-weight: bold;" id="message"></p>
 
-                            <button onclick="saveProduct();" id="saveBtn" type="submit" class="btn btn-success" style="width: 250px; font-weight: bold; height: 50px; margin-top: 30px;">Save Product</button>
+
+                            <button onclick="saveProduct();" id="saveBtn" type="submit" class="btn btn-success" style="width: 250px; font-weight: bold; height: 50px; margin-top: 30px; margin-right: 10px;">Save Product</button>
+
                             <button onclick="resetProductForm();" id="resetBtn" type="button" class="btn btn-outline-danger" style="width: 250px; font-weight: bold; height: 50px; margin-top: 30px;">Reset</button>
+
 
                         </form>
                     </div>
@@ -170,6 +183,7 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/product-listing.js"></script>
         <script src="js/manage-products.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
