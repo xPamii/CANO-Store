@@ -79,13 +79,13 @@ public class AddProduct extends HttpServlet {
 
         } else if (description.isEmpty()) {
             responseObject.addProperty("message", "Product description can not be empty");
-            
+
         } else if (weight.isEmpty()) {
             responseObject.addProperty("message", "Product weight can not be empty");
-            
+
         } else if (dimension.isEmpty()) {
             responseObject.addProperty("message", "Product dimension can not be empty");
-            
+
         } else if (material.isEmpty()) {
             responseObject.addProperty("message", "Product material can not be empty");
 
@@ -186,6 +186,7 @@ public class AddProduct extends HttpServlet {
                             Files.copy(image3.getInputStream(), file3.toPath(), StandardCopyOption.REPLACE_EXISTING);
 //                            image uploading end
 
+                            responseObject.addProperty("message", "Product saved successfullyyyyy");
                             responseObject.addProperty("status", true);
                         }
                     }
