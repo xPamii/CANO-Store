@@ -18,5 +18,6 @@
         <mapping class="hibernate.Size" />
         <mapping class="hibernate.Status" />
         <mapping class="hibernate.Type" />
+        <mapping class="hibernate.Cart" />
     </session-factory>
 </hibernate-configuration>
