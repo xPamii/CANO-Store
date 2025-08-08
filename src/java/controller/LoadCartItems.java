@@ -40,6 +40,7 @@ public class LoadCartItems extends HttpServlet {
             c1.add(Restrictions.eq("user", user));
             List<Cart> cartList = c1.list();
             if (cartList.isEmpty()) {
+                System.out.println("Your cart is empty...");
                 responseObject.addProperty("message", "Your cart is empty...");
             } else {
                 for (Cart cart : cartList) {
@@ -66,6 +67,7 @@ public class LoadCartItems extends HttpServlet {
                     responseObject.add("cartItems", gson.toJsonTree(sessionCarts));
                 }
             } else {
+//                System.out.println("Your cart is empty...");
                 responseObject.addProperty("message", "Your cart is empty...");
             }
         }
