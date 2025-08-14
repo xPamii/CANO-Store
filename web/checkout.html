@@ -6,6 +6,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!-- Updated CSP -->
+<!--        <meta http-equiv="Content-Security-Policy" 
+              content="default-src 'self';
+              script-src 'self' https://www.payhere.lk https://cdn.jsdelivr.net 'unsafe-inline';
+              style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
+              font-src 'self';
+              connect-src 'self' https://sandbox.payhere.lk;
+              img-src 'self' data:;">-->
+
+
         <!--===============================================================================================-->
         <link rel="icon" type="image/png" href="images/icons/favicon.png" />
         <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -18,6 +28,9 @@
         <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
         <link rel="stylesheet" type="text/css" href="css/util.css">
         <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" href="vendor/sweetalert/sweetalert2.css">
+
+
         <!--===============================================================================================-->
     </head>
 
@@ -252,7 +265,7 @@
                         <div class="bor10 p-lr-40 p-t-30 p-b-30 m-b-50">
                             <div class="row">
                                 <div class="form-group input-group col-auto bor12 p-b-13 m-b-20 p-lr-15 p-tb-10">
-                                    <input type="checkbox" id="checkbox1">
+                                    <input type="checkbox" id="checkbox1" disabled>
                                     <label for="checkbox1" class="stext-105 cl2 m-2 mt-sm-2"  style="font-weight: bold;">Same as your current address?</label>
                                 </div>
 
@@ -531,6 +544,8 @@
         <!-- Footer -->
 
         <!-- Scripts -->
+        <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
         <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
         <script src="vendor/animsition/js/animsition.min.js"></script>
         <script src="vendor/bootstrap/js/popper.js"></script>
@@ -539,13 +554,11 @@
         <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
         <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
         <script src="js/main.js"></script>
-        <script src="js/sideCart.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://www.payhere.lk/lib/payhere.js"></script>
+
+
         <script src="js/checkout.js"></script>
-
-
-
+        <script src="js/sideCart.js"></script>
     </body>
 </html>
