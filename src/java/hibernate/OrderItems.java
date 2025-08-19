@@ -15,33 +15,43 @@ import javax.persistence.Table;
  * @author pamii
  */
 @Entity
-@Table(name="order_items")
-public class OrderItems implements Serializable{
+@Table(name = "order_items")
+public class OrderItems implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
-    
+
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
-    
+
     @Column(name = "qty", nullable = false)
     private int qty;
-    
+
     @ManyToOne
-    @JoinColumn(name="order_status_id")
+    @JoinColumn(name = "order_status_id")
     private OrderStatus orderStatus;
-    
+
     @ManyToOne
-    @JoinColumn(name="delivery_type_id")
+    @JoinColumn(name = "delivery_type_id")
     private DeliveryTypes deliveryTypes;
-    
+
     @Column(name = "rating", nullable = false)
     private int rating;
-    
+
+    @Column(name = "discount", nullable = false)
+    private int discount;
+
+    @Column(name = "sub_total", nullable = false)
+    private int subTotal;
+
+    @Column(name = "total", nullable = false)
+    private int total;
+
     @ManyToOne
-    @JoinColumn(name="orders_id")
+    @JoinColumn(name = "orders_id")
     private Orders orders;
 
     public OrderItems() {
@@ -102,8 +112,29 @@ public class OrderItems implements Serializable{
     public void setOrders(Orders orders) {
         this.orders = orders;
     }
-    
-    
-    
-    
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public int getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(int subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
 }
