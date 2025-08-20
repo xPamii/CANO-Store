@@ -41,14 +41,8 @@ public class OrderItems implements Serializable {
     @Column(name = "rating", nullable = false)
     private int rating;
 
-    @Column(name = "discount", nullable = false)
-    private int discount;
-
-    @Column(name = "sub_total", nullable = false)
-    private int subTotal;
-
-    @Column(name = "total", nullable = false)
-    private int total;
+    @Column(name = "item_subtotal", nullable = false)
+    private double itemSubtotal;
 
     @ManyToOne
     @JoinColumn(name = "orders_id")
@@ -113,28 +107,11 @@ public class OrderItems implements Serializable {
         this.orders = orders;
     }
 
-    public int getDiscount() {
-        return discount;
+    public double getItemSubtotal() {
+        return itemSubtotal;
     }
 
-    public void setDiscount(int discount) {
-        this.discount = discount;
+    public void setItemSubtotal(double itemSubtotal) {
+        this.itemSubtotal = itemSubtotal;
     }
-
-    public int getSubTotal() {
-        return subTotal;
-    }
-
-    public void setSubTotal(int subTotal) {
-        this.subTotal = subTotal;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
 }
