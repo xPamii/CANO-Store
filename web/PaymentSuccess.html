@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Successful | CANO Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #d4fc79, #96e6a1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .success-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeInUp 1s ease-out;
+      position: relative;
+      max-width: 480px;
+    }
+
+    .success-box h1 {
+      font-size: 2.6rem;
+      color: #198754;
+      animation: popIn 1s ease-in-out;
+    }
+
+    .success-box p {
+      font-size: 1.2rem;
+      margin: 20px 0 10px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .order-id {
+      display: inline-block;
+      background: #198754;
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .countdown {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .count-num {
+      font-size: 1.5rem;
+      color: #198754;
+      font-weight: bold;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    .count-animate {
+      animation: popGlow 1.5s ease;
+    }
+
+    .btn-invoice {
+      border-radius: 8px;
+      padding: 12px 30px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      animation: pulse 1.5s infinite;
+    }
+
+    .btn-invoice::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75px;
+      width: 50px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      transform: skewX(-20deg);
+      /*animation: shine 2s infinite;*/
+    }
+
+    .btn-invoice:hover {
+      transform: scale(1.05);
+    }
+
+    .checkmark {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #198754;
+      position: relative;
+      animation: scaleUp 0.6s ease forwards;
+      margin-bottom: 20px;
+    }
+
+    .checkmark::after {
+      content: "";
+      position: absolute;
+      left: 35px;
+      top: 20px;
+      width: 25px;
+      height: 50px;
+      border: solid #fff;
+      border-width: 0 10px 10px 0;
+      transform: rotate(45deg) scale(0);
+      animation: drawCheck 0.6s ease 0.5s forwards;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp { from {opacity: 0; transform: translateY(40px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes popIn { 0% {transform: scale(0.5); opacity: 0;} 100% {transform: scale(1); opacity: 1;} }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes scaleUp { from {transform: scale(0);} to {transform: scale(1);} }
+    @keyframes drawCheck { to {transform: rotate(45deg) scale(1);} }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    @keyframes shine { 0% { left: -75px; } 100% { left: 120%; } }
+    @keyframes popGlow {
+      0% { transform: scale(1); color: #198754; text-shadow: none; }
+      50% { transform: scale(1.5); color: #28a745; text-shadow: 0 0 8px rgba(40,167,69,0.6); }
+      100% { transform: scale(1); color: #198754; text-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="success-box">
+    <div class="checkmark"></div>
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your purchase 🎉</p>
+    <div id="orderBadge" class="order-id" style="display:none;"></div>
+    <div class="countdown">Redirecting in <span id="countNum" class="count-num">10</span> seconds...</div>
+    <a id="invoiceBtn" href="#" class="btn btn-success btn-invoice">Go to Invoice</a>
+  </div>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    // 🎊 Confetti for 2s
+    const duration = 2000;
+    const end = Date.now() + duration;
+    (function frame() {
+      confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 } });
+      confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 } });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+
+    // 🔎 Get orderId from URL
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('orderId');
+
+    if(orderId){
+      const invoiceUrl = `invoice.html?orderId=${orderId}`;
+      document.getElementById('invoiceBtn').href = invoiceUrl;
+      document.getElementById('orderBadge').textContent = "Order ID: " + orderId;
+      document.getElementById('orderBadge').style.display = "inline-block";
+
+      // Countdown
+      let timeLeft = 10;
+      const countNumEl = document.getElementById('countNum');
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          countNumEl.textContent = timeLeft;
+          countNumEl.classList.remove("count-animate");
+          void countNumEl.offsetWidth; // restart animation
+          countNumEl.classList.add("count-animate");
+        } else {
+          clearInterval(timer);
+          window.location.href = invoiceUrl;
+        }
+      }, 1000);
+    } else {
+      document.getElementById('invoiceBtn').innerText = "Invoice Not Found";
+      document.querySelector('.countdown').style.display = "none";
+    }
+  </script>
+</body>
+</html>
