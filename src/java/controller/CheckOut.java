@@ -10,10 +10,10 @@ import hibernate.HibernateUtil;
 import hibernate.OrderItems;
 import hibernate.OrderStatus;
 import hibernate.Orders;
+import hibernate.PaymentStatus;
 import hibernate.Product;
 import hibernate.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +43,7 @@ public class CheckOut extends HttpServlet {
     private static final int WITHIN_COLOMBO = 1;
     private static final int OUT_OF_COLOMBO = 2;
     private static final int RATING_DEFAULT_VALUE = 0;
+    private static final int PAYMENT_STATUS = 2;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,6 +58,10 @@ public class CheckOut extends HttpServlet {
         String lineTwo = requJsonObject.get("lineTwo").getAsString();
         String postalCode = requJsonObject.get("postalCode").getAsString();
         String mobile = requJsonObject.get("mobile").getAsString();
+
+        Double productTotal = requJsonObject.get("productTotal").getAsDouble();
+        int discount = requJsonObject.get("discount").getAsInt();
+        Double orderTotal = requJsonObject.get("orderTotal").getAsDouble();
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session s = sf.openSession();
@@ -78,7 +83,8 @@ public class CheckOut extends HttpServlet {
                             "You current address is not found. Please add a new address");
                 } else {
                     Address address = (Address) c1.list().get(0);
-                    processCheckout(s, tr, user, address, responseObject);
+                    processCheckout(s, tr, user, address, responseObject, productTotal, discount, orderTotal);
+
                 }
             } else {
                 if (firstName.isEmpty()) {
@@ -118,7 +124,8 @@ public class CheckOut extends HttpServlet {
                             address.setUser(user);
                             s.save(address);
 
-                            processCheckout(s, tr, user, address, responseObject);
+                            processCheckout(s, tr, user, address, responseObject, productTotal, discount, orderTotal);
+
                         }
                     }
                 }
@@ -134,13 +141,23 @@ public class CheckOut extends HttpServlet {
             Transaction tr,
             User user,
             Address address,
-            JsonObject responseObject) {
+            JsonObject responseObject,
+            Double productTotal,
+            int discount,
+            Double orderTotal) {
 
         try {
             Orders orders = new Orders();
             orders.setAddress(address);
             orders.setCreatedAt(new Date());
             orders.setUser(user);
+
+            PaymentStatus paymentStatus = (PaymentStatus) s.get(PaymentStatus.class, CheckOut.PAYMENT_STATUS);
+            orders.setPaymentStatus(paymentStatus);
+
+            orders.setSubTotal(productTotal);
+            orders.setDiscount(discount);
+            orders.setGrandTotal(orderTotal);
 
             int orderId = (int) s.save(orders);
 
@@ -156,17 +173,19 @@ public class CheckOut extends HttpServlet {
             String items = "";
 
             for (Cart cart : cartList) {
-                amount += cart.getQty() * cart.getProduct().getPrice();
+                double itemSubtotal = cart.getQty() * cart.getProduct().getPrice();
+                amount += itemSubtotal;
 
                 OrderItems orderItems = new OrderItems();
 
-                if (address.getCity().getName().equalsIgnoreCase("Colombo")) { // within colombo
+                if (address.getCity().getName().equalsIgnoreCase("Colombo")) {
                     amount += cart.getQty() * withInColombo.getPrice();
                     orderItems.setDeliveryTypes(withInColombo);
-                } else {// out of colombo
+                } else {
                     amount += cart.getQty() * outOfColombo.getPrice();
                     orderItems.setDeliveryTypes(outOfColombo);
                 }
+
                 items += cart.getProduct().getName() + " x " + cart.getQty() + ", ";
 
                 Product product = cart.getProduct();
@@ -174,20 +193,16 @@ public class CheckOut extends HttpServlet {
                 orderItems.setOrders(orders);
                 orderItems.setProduct(product);
                 orderItems.setQty(cart.getQty());
-                orderItems.setRating(CheckOut.RATING_DEFAULT_VALUE); // 0
-
+                orderItems.setRating(CheckOut.RATING_DEFAULT_VALUE);
+                orderItems.setItemSubtotal(itemSubtotal); 
                 s.save(orderItems);
 
-                //update product qty
                 product.setQty(product.getQty() - cart.getQty());
                 s.update(product);
-
-                // delete cart item
                 s.delete(cart);
             }
 
             tr.commit();
-
 
             // PayHere process
             String merchantID = "1227011";
@@ -199,14 +214,12 @@ public class CheckOut extends HttpServlet {
 
             String hash = PayHere.generateMD5(merchantID + orderID + formattedAmount + currency + merchantSecretMD5);
 
-
             JsonObject payHereJson = new JsonObject();
             payHereJson.addProperty("sandbox", true);
             payHereJson.addProperty("merchant_id", merchantID);
 
-
-            payHereJson.addProperty("return_url", "https://f9592c9154a0.ngrok-free.app/CanoStore/home.html");
-            payHereJson.addProperty("cancel_url", "https://f9592c9154a0.ngrok-free.app/CanoStore/404page.html");
+            payHereJson.addProperty("return_url", "");
+            payHereJson.addProperty("cancel_url", "");
             payHereJson.addProperty("notify_url", "https://f9592c9154a0.ngrok-free.app/CanoStore/VerifyPayments");
 
             payHereJson.addProperty("order_id", orderID);
