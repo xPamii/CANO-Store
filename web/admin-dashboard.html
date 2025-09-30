@@ -2,63 +2,614 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>CANO Admin Dashboard</title>
+        <link rel="icon" type="image/png" href="images/icons/favicon.png" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/admin-style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <style>
+            body {
+                background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+                font-family: 'Poppins', sans-serif;
+                color: #fff;
+                margin: 0;
+                min-height: 100vh;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 80px;
+                background: rgba(43, 43, 43, 0.95);
+                backdrop-filter: blur(10px);
+                border-right: 1px solid rgba(255,255,255,0.1);
+                transition: width 0.3s ease;
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                overflow: hidden;
+            }
+
+            .sidebar.expanded {
+                width: 250px;
+            }
+
+            .sidebar-content {
+                padding: 1rem;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .toggle-btn {
+                background: rgba(255,255,255,0.1);
+                border: none;
+                color: #fff;
+                font-size: 20px;
+                width: 45px;
+                height: 45px;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .toggle-btn:hover {
+                background: rgba(255,255,255,0.2);
+                transform: scale(1.05);
+            }
+
+            .sidebar .nav-link {
+                color: #d1d5db;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 12px;
+                border-radius: 10px;
+                transition: all 0.3s;
+                text-decoration: none;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .sidebar .nav-link i {
+                font-size: 20px;
+                min-width: 25px;
+                text-align: center;
+                z-index: 1;
+            }
+
+            .sidebar .nav-link span {
+                opacity: 0;
+                white-space: nowrap;
+                transition: opacity 0.3s ease;
+                z-index: 1;
+            }
+
+            .sidebar.expanded .nav-link span {
+                opacity: 1;
+            }
+
+            .sidebar .nav-link:hover {
+                background: rgba(255,255,255,0.15);
+                color: #fff;
+                transform: translateX(5px);
+            }
+
+            .sidebar .nav-link.active {
+                background: rgba(74, 222, 128, 0.2);
+                color: #4ade80;
+            }
+
+            .sidebar .nav-link.active::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 4px;
+                background: #4ade80;
+                border-radius: 0 4px 4px 0;
+            }
+
+            .nav-bottom {
+                margin-top: auto;
+            }
+
+            .nav-bottom .btn {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                padding: 12px;
+                border-radius: 10px;
+                transition: all 0.3s;
+            }
+
+            .nav-bottom .btn i {
+                font-size: 18px;
+                margin-left: 10px;
+            }
+
+            .nav-bottom .btn span {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .sidebar.expanded .nav-bottom .btn span {
+                opacity: 1;
+            }
+
+            .nav-bottom .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+            }
+
+            /* Main Content */
+            .main-content {
+                margin-left: 80px;
+                transition: margin-left 0.3s ease;
+                min-height: 100vh;
+                padding: 2rem;
+            }
+
+            .main-content.shifted {
+                margin-left: 250px;
+            }
+
+            /* Header */
+            .dashboard-header h2 {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            .dashboard-header p {
+                opacity: 0.8;
+                font-size: 1rem;
+            }
+
+            /* Cards */
+            .card {
+                background: rgba(255,255,255,0.1) !important;
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255,255,255,0.15) !important;
+                border-radius: 15px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+                transition: all 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            }
+
+            .kpi-card {
+                padding: 1.5rem !important;
+                text-align: center;
+            }
+
+            .kpi-card h5 {
+                font-size: 0.95rem;
+                font-weight: 600;
+                opacity: 0.9;
+                margin-bottom: 1rem;
+            }
+
+            .kpi-card h2 {
+                font-size: 2.2rem;
+                font-weight: 700;
+                margin: 0;
+                background: linear-gradient(135deg, #4ade80, #22c55e);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            /* Chart Card */
+            .chart-card {
+                padding: 1.5rem !important;
+            }
+
+            .chart-card h5 {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            #salesChart {
+                max-height: 300px;
+            }
+
+            /* Categories Card */
+            .categories-card {
+                padding: 1.5rem !important;
+            }
+
+            .categories-card h5 {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .list-group-item {
+                background: transparent !important;
+                color: #fff !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+                padding: 1rem 0 !important;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .list-group-item:last-child {
+                border-bottom: none !important;
+            }
+
+            .list-group-item .badge {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            /* Inventory Table */
+            .inventory-card {
+                padding: 1.5rem !important;
+            }
+
+            .inventory-card h5 {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .table-responsive {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .table-dark {
+                background: transparent;
+                color: #fff;
+                margin-bottom: 0;
+            }
+
+            .table-dark thead th {
+                background: rgba(255,255,255,0.05);
+                border-color: rgba(255,255,255,0.1);
+                font-weight: 600;
+                padding: 1rem;
+            }
+
+            .table-dark tbody td {
+                border-color: rgba(255,255,255,0.1);
+                padding: 1rem;
+            }
+
+            .table-hover tbody tr:hover {
+                background: rgba(255,255,255,0.05);
+            }
+
+            /* Badges */
+            .badge {
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            }
+
+            /* Buttons */
+            .btn-warning {
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                border: none;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+
+            .btn-warning:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .main-content {
+                    margin-left: 80px;
+                    padding: 1rem;
+                }
+
+                .main-content.shifted {
+                    margin-left: 80px;
+                }
+
+                .sidebar.expanded {
+                    width: 80px;
+                }
+
+                .kpi-card h2 {
+                    font-size: 1.8rem;
+                }
+
+                .dashboard-header h2 {
+                    font-size: 1.5rem;
+                }
+            }
+        </style>
     </head>
     <body>
-
         <!-- Sidebar -->
-        <div class="d-flex">
-            <nav class="bg-dark text-white p-3 min-vh-100" style="width: 250px;">
-                <h4 class="mb-4">CANO Admin</h4>
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a href="admin-dashboard.html" class="nav-link text-white">Dashboard</a></li>
-                    <li class="nav-item"><a href="manage-products.html" class="nav-link text-white">Products</a></li>
-                    <li class="nav-item"><a href="orders.html" class="nav-link text-white">Orders</a></li>
-                    <li class="nav-item"><a href="manage-users.html" class="nav-link text-white">Users</a></li>
-                    <li class="nav-item"><a href="reports.html" class="nav-link text-white">Reports</a></li>
-                    <li class="nav-item mt-4">  <button onclick="logout()" class="btn btn-danger w-100">Logout</button>
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content">
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <ul class="nav flex-column gap-2">
+                    <li class="nav-item">
+                        <a href="admin-dashboard.html" class="nav-link active">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-products.html" class="nav-link">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-orders.html" class="nav-link">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-users.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Reports</span>
+                        </a>
                     </li>
                 </ul>
-            </nav>
 
-            <!-- Main Content -->
-            <div class="p-4 flex-fill">
-                <h2>Welcome to CANO Admin Dashboard</h2>
-                <p>Overview of store performance</p>
+                <div class="nav-bottom">
 
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Products</h5>
-                                <p class="card-text">150</p>
-                            </div>
-                        </div>
+                    <ul class="nav flex-column gap-2">
+                        <li class="nav-item">
+                            <a href="#" class="btn btn-danger">
+                               <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--        <button class="btn btn-danger">
+                              <i class="fas fa-sign-out-alt"></i>
+                              <span>Logout</span>
+                            </button>-->
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content">
+            <div class="dashboard-header">
+                <h2 class="fw-bold">Welcome to CANO Admin Dashboard</h2>
+                <p class="text-light">Overview of clothing store performance</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="row mt-4 g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card kpi-card">
+                        <h5>Total Products</h5>
+                        <h2>150</h2>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card text-white bg-success mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Orders</h5>
-                                <p class="card-text">350</p>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card kpi-card">
+                        <h5>Orders</h5>
+                        <h2>350</h2>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card text-white bg-warning mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Revenue</h5>
-                                <p class="card-text">$10,000</p>
-                            </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card kpi-card">
+                        <h5>Revenue</h5>
+                        <h2>105,300</h2>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card kpi-card">
+                        <h5>Active Customers</h5>
+                        <h2>1,250</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Insights -->
+            <div class="row mt-4 g-4">
+                <div class="col-lg-6">
+                    <div class="card chart-card">
+                        <h5>
+                            <i class="fas fa-chart-line text-success"></i>
+                            Sales Trend
+                        </h5>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card categories-card">
+                        <h5>
+                            <i class="fas fa-tshirt text-success"></i>
+                            Top Categories
+                        </h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <span>T-Shirts</span>
+                                <span class="badge bg-success">120 sales</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Jeans</span>
+                                <span class="badge bg-success">95 sales</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Jackets</span>
+                                <span class="badge bg-success">60 sales</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Shoes</span>
+                                <span class="badge bg-success">45 sales</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Alerts -->
+            <div class="row mt-4 g-4">
+                <div class="col-12">
+                    <div class="card inventory-card">
+                        <h5>
+                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                            Inventory Alerts
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Stock</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Black Hoodie</td>
+                                        <td>Jackets</td>
+                                        <td><span class="badge bg-danger">Low (5)</span></td>
+                                        <td><button class="btn btn-sm btn-warning">Restock</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Denim Jeans</td>
+                                        <td>Jeans</td>
+                                        <td><span class="badge bg-danger">Low (3)</span></td>
+                                        <td><button class="btn btn-sm btn-warning">Restock</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
+        <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+                // Chart Configuration
+                const ctx = document.getElementById('salesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                                label: 'Monthly Sales (LKR)',
+                                data: [15000, 21000, 24000, 19500, 27000, 33000],
+                                borderColor: '#4ade80',
+                                backgroundColor: 'rgba(74, 222, 128, 0.2)',
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor: '#4ade80',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#fff',
+                                    font: {
+                                        size: 13,
+                                        family: 'Poppins'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                borderColor: '#4ade80',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    color: '#fff',
+                                    font: {
+                                        family: 'Poppins'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)',
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#fff',
+                                    font: {
+                                        family: 'Poppins'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)',
+                                    drawBorder: false
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Toggle Sidebar
+                function toggleSidebar() {
+                    const sidebar = document.getElementById('sidebar');
+                    const mainContent = document.getElementById('mainContent');
+                    sidebar.classList.toggle('expanded');
+                    mainContent.classList.toggle('shifted');
+                }
+
+                // Logout function
+                function logout() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        window.location.href = 'login.html';
+                    }
+                }
+        </script>
     </body>
 </html>
