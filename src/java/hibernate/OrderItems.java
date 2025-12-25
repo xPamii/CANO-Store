@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.google.gson.annotations.Expose;
 
 /**
  *
@@ -21,27 +22,33 @@ public class OrderItems implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Expose
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @Expose
     private Product product;
 
     @Column(name = "qty", nullable = false)
+    @Expose
     private int qty;
 
     @ManyToOne
     @JoinColumn(name = "order_status_id")
+    @Expose
     private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "delivery_type_id")
+    @Expose
     private DeliveryTypes deliveryTypes;
 
     @Column(name = "rating", nullable = false)
     private int rating;
 
     @Column(name = "item_subtotal", nullable = false)
+    @Expose
     private double itemSubtotal;
 
     @ManyToOne
