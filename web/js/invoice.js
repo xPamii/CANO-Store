@@ -10,11 +10,16 @@ fetch(`/CanoStore/InvoiceData?orderId=${orderId}`)
             return res.json();
         })
         .then(order => {
+
             // Customer info
-            const user = order.user;
+            const userInfo = order.user;
             const addr = order.address;
-            document.getElementById('customerName').innerText = addr.firstName + " " + addr.lastName;
-            document.getElementById('customerAddress').innerText = `${addr.lineOne}, ${addr.lineTwo}, ${addr.city.name}`;
+
+            document.getElementById('customerName').innerText = userInfo.firstName + " " + userInfo.lastName;
+            document.getElementById('customerEmail').innerText = userInfo.email;
+            document.getElementById('customerMobile').innerText = addr.mobile;
+            document.getElementById('customerAddress').innerText = `${addr.lineOne}, ${addr.lineTwo}, ${addr.city.name},Sri Lanka, ${addr.postalCode}`;
+
             document.getElementById('orderId').innerText = order.orderId;
             document.getElementById('invoiceDate').innerText = new Date(order.createdAt).toLocaleDateString('en-LK', {day: 'numeric', month: 'short', year: 'numeric'});
             document.getElementById('orderStatus').innerText = order.orderStatus;
