@@ -489,3 +489,19 @@ function clearFileInputs() {
     document.getElementById("productImage2").value = "";
     document.getElementById("productImage3").value = "";
 }
+
+function logout() {
+    Swal.fire({
+        title: 'Are you sure you want to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, logout',
+        cancelButtonText: 'Cancel',
+        background: '#2b2b2b',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'login.html';
+        }
+    });
+}
