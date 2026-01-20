@@ -47,6 +47,17 @@ async function loadCartItems() {
             document.getElementById("total-discounted-amount").innerHTML = new Intl.NumberFormat("en-US", {minimumFractionDigits: 2}).format(total);
 
 
+//            // Save cart data to localStorage for checkout page
+//            localStorage.setItem("cartItems", JSON.stringify(json.cartItems));
+//            localStorage.setItem("cartTotals", JSON.stringify({
+//                subtotal: subtotal.toFixed(2),
+//                discount: totalDiscountAmount.toFixed(2),
+//                total: total.toFixed(2),
+//                totalQty: totalQty
+//            }));
+
+
+
         } else {
             Swal.fire({
                 title: "Error!",
