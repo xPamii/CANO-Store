@@ -10,7 +10,7 @@ function loadProductDetails(productId) {
                 const product = data.product;
                 const similarProducts = data.productList;
 
-                // 🟢 Set Main Product Info
+                // Set Main Product Info
                 document.getElementById("product-name").textContent = product.name;
                 document.getElementById("product-price").textContent = product.price;
                 document.getElementById("product-size").textContent = product.size ? product.size.value : "-";
@@ -18,7 +18,7 @@ function loadProductDetails(productId) {
                 document.getElementById("product-color").textContent = product.color ? product.color.value : "-";
                 document.getElementById("product-description").textContent = product.description;
 
-                // 🟢 Additional Info
+                //  Additional Info
                 document.getElementById("product-weight").textContent = product.weight || "-";
                 document.getElementById("product-dimension").textContent = product.dimension || "-";
                 document.getElementById("product-material").textContent = product.material || "-";
@@ -26,7 +26,7 @@ function loadProductDetails(productId) {
                 document.getElementById("product-size-ad").textContent = product.size ? product.size.value : "-";
                 document.getElementById("product-published-on").textContent = product.created_at || "-";
 
-                // ✅ Update preview and expand links
+                // Update preview and expand links
                 for (let i = 1; i <= 3; i++) {
                     const preview = document.getElementById(`product-image-0${i}-preview`);
                     const expand = document.getElementById(`product-image-0${i}-expand`);
@@ -49,12 +49,10 @@ function loadProductDetails(productId) {
                     addToCart(product.id, document.getElementById("add-to-cart-qty").value);
                     e.preventDefault();
                 });
-
                 //add-to-cart-main-button-end
 
 
-
-                // 🟢 Similar Products
+                // Similar Products
                 const container = document.querySelector('.slick2');
                 container.innerHTML = "";
 
@@ -86,7 +84,7 @@ function loadProductDetails(productId) {
                     container.innerHTML += card;
                 });
 
-                // 🟢 Re-initialize Slick Carousel
+                // Re-initialize Slick Carousel
                 if ($('.slick2').hasClass('slick-initialized')) {
                     $('.slick2').slick('unslick');
                 }
@@ -105,7 +103,7 @@ function loadProductDetails(productId) {
             });
 }
 
-// 🟢 Load product if ID is present in URL
+// Load product if ID is present in URL
 const params = new URLSearchParams(window.location.search);
 const pid = params.get("id");
 if (pid) {
