@@ -1,19 +1,43 @@
-// PayHere callbacks
 payhere.onCompleted = function (orderId) {
-    Swal.fire({
-        title: "Success",
-        text: "Payment completed. Order ID: " + orderId,
-        icon: "success",
-        confirmButtonColor: "#f0ad4e"
+    console.log("Callback fired! Order ID:", orderId);
+
+    // Clear cart display
+    ["cart-product-list", "st-product-total-amount", "st-discount-amount", "st-product-shipping-amount", "st-order-total-amount"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el)
+            el.textContent = id === "cart-product-list" ? "" : "0.00";
     });
+
+    // Clear form fields
+    ["first-name", "last-name", "line-one", "line-two", "postal-code", "mobile", "city-select"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el)
+            el.value = "";
+    });
+
+    // Disable checkout button
+    const checkoutBtn = document.getElementById("checkout-btn");
+    if (checkoutBtn) {
+        checkoutBtn.disabled = true;
+        checkoutBtn.textContent = "Payment Completed";
+    }
+
+//    orderId = orderId.replace(/\D/g, '');
+    orderId = orderId.replace("#000", "");
+
+    // Redirect
+    window.top.location.href = "http://localhost:8080/CanoStore/PaymentSuccess.html?orderId=" + orderId;
 };
 
+
 payhere.onDismissed = function () {
-    console.log("Payment dismissed by user.");
+    // Redirect to cancel page
+    window.location.href = "/CanoStore/PaymentCancelled.html";
 };
 
 payhere.onError = function (error) {
-    console.log("Payment error: " + error);
+    console.error("Error:", error);
+    Swal.fire("Error", "Payment failed: " + error, "error");
 };
 
 // Load checkout data
@@ -44,12 +68,21 @@ async function loadCheckoutData() {
         // Load cities
         const citySelect = document.getElementById("city-select");
         citySelect.innerHTML = "";
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = ""; // empty value
+        defaultOption.textContent = "Select City";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        citySelect.appendChild(defaultOption);
+
         cityList.forEach(city => {
             const option = document.createElement("option");
             option.value = city.id;
             option.textContent = city.name;
             citySelect.appendChild(option);
         });
+
 
         // Handle current address checkbox
         document.getElementById("checkbox1").addEventListener("change", () => {
@@ -114,7 +147,7 @@ async function loadCheckoutData() {
         const discountPercentage = 10;
         const discountAmount = (total * discountPercentage) / 100;
         let subtotalAfterDiscount = total - discountAmount;
-        let shippingCharges = 500;
+        let shippingCharges = 0;
 
         const stProductTotal = document.getElementById("st-product-total-amount");
         const stDiscount = document.getElementById("st-discount-amount");
@@ -149,13 +182,19 @@ async function loadCheckoutData() {
 async function checkout() {
     const data = {
         isCurrentAddress: document.getElementById("checkbox1").checked,
-        firstName: document.getElementById("first-name").value,
-        lastName: document.getElementById("last-name").value,
+        firstName: document.getElementById("first-name").value.trim(),
+        lastName: document.getElementById("last-name").value.trim(),
         citySelect: document.getElementById("city-select").value,
-        lineOne: document.getElementById("line-one").value,
-        lineTwo: document.getElementById("line-two").value,
-        postalCode: document.getElementById("postal-code").value,
-        mobile: document.getElementById("mobile").value
+        lineOne: document.getElementById("line-one").value.trim(),
+        lineTwo: document.getElementById("line-two").value.trim(),
+        postalCode: document.getElementById("postal-code").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+
+        productTotal: parseFloat(document.getElementById("st-product-total-amount").textContent) || 0,
+        discount: parseInt(document.getElementById("st-discount-amount").textContent) || 0,
+        orderTotal: parseFloat(document.getElementById("st-order-total-amount").textContent) || 0
+
+
     };
 
     try {
