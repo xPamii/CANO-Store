@@ -96,7 +96,7 @@ async function adminLogIn() {
 //    }, 1200);
 //};
 
-// Add shake animation
+// shake animation
 const shakeKeyframes = `
       @keyframes shake {
         0%, 100% { transform: translateX(0); }
